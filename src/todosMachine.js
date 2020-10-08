@@ -45,6 +45,7 @@ export const todosMachine = createMachine({
 					todo: '', // clear todo
 					todos: (context, event) => {
 						const newTodo = createTodo(event.value.trim())
+						console.log('new todo', newTodo)
 						return context.todos.concat({
 							...newTodo,
 							ref: spawn(createTodoMachine(newTodo)),

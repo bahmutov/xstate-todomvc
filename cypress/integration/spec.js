@@ -66,6 +66,74 @@ describe('TodoMVC', () => {
     })
   })
 
+  it('adds todos', () => {
+    const state = {}
+    cy.visit('/', {
+      onBeforeLoad(win) {
+        win.__xstate__ = {
+          register: (x) => {
+            state.xstate = x
+          },
+        }
+      },
+    })
+
+    cy.wrap(state)
+      .its('xstate')
+      .invoke('send', { type: 'NEWTODO.COMMIT', value: 'first todo' })
+    cy.get('.todo-list li').should('have.length', 1)
+  })
+
+  it.skip('adds 2 todos', () => {
+    const state = {}
+    cy.visit('/', {
+      onBeforeLoad(win) {
+        win.__xstate__ = {
+          register: (x) => {
+            state.xstate = x
+          },
+        }
+      },
+    })
+
+    cy.wrap(state)
+      .its('xstate')
+      .invoke('send', { type: 'NEWTODO.COMMIT', value: 'first todo' })
+    cy.get('.todo-list li').should('have.length', 1)
+
+    // hmm, why isn't the second todo added?
+    cy.wrap(state)
+      .its('xstate')
+      .invoke('send', { type: 'NEWTODO.COMMIT', value: 'second todo' })
+    cy.get('.todo-list li').should('have.length', 2)
+  })
+
+  it('listens to events', () => {
+    const state = {}
+    cy.visit('/', {
+      onBeforeLoad(win) {
+        win.__xstate__ = {
+          register: (x) => {
+            state.xstate = x
+          },
+        }
+      },
+    })
+    // start listening to xstate events
+    cy.wrap(state)
+      .its('xstate')
+      .invoke('subscribe', (state, event) => cy.stub().as('events')(event))
+
+    // if we add the todo via DOM
+    cy.get('.new-todo').clear().type('write better tests{enter}')
+
+    // then we will have the event in the state machine
+    cy.get('@events').should('have.been.calledWith', {
+      type: 'NEWTODO.COMMIT',
+      value: 'write better tests',
+    })
+  })
+
   it('works', () => {
     const state = {}
     cy.visit('/', {
