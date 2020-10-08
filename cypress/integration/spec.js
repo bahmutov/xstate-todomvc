@@ -56,14 +56,12 @@ describe('TodoMVC', () => {
     todos.forEach((todo, k) => {
       cy.get('.todo-list li label').eq(k).should('have.text', todo.title)
       if (todo.completed) {
-        // NOTE: disabled because fails!
-        // the "completed: true" state is not passed correctly
-        // from the deserialized list into every Todo item
-        // cy.get('.todo-list li').eq(k).should('have.class', 'completed')
+        cy.get('.todo-list li').eq(k).should('have.class', 'completed')
       } else {
         cy.get('.todo-list li').eq(k).should('not.have.class', 'completed')
       }
     })
+    cy.contains('.todo-count', '1')
   })
 
   it('adds todos', () => {
