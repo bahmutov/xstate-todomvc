@@ -84,6 +84,8 @@ describe('TodoMVC', () => {
     cy.get('.todo-list li').should('have.length', 1)
   })
 
+  // the second todo never appears
+  // NOTE: https://github.com/bahmutov/xstate-todomvc/issues/1
   it.skip('adds 2 todos', () => {
     const state = {}
     cy.visit('/', {

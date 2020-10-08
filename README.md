@@ -10,3 +10,5 @@ npm run dev
 Pick the Cypress spec file
 
 ![Demo showing combination of model and DOM actions](images/demo.gif)
+
+Read [Access XState from Cypress Test](https://glebbahmutov.com/blog/cypress-and-xstate/)
